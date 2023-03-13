@@ -75,15 +75,20 @@ class Game extends React.Component {
         squares : Array(9).fill(null),
       }],
       xIsNext : true,
+      stepNumber : 0,
     };
   }
   
   handleClick(i) {
     console.log('handleClick : ' + i);
 
-    let history = this.state.history;
+    let history = this.state.history.slice(0, this.state.stepNumber + 1);
+    console.log(history);
+    
     let current = history[history.length - 1];
-    let buff = current.squares;
+    console.log(current);
+
+    let buff = current.squares.slice();
     console.log('buff');
     console.log(buff);
     if(buff[i] || judgeWinner(buff)) {
@@ -97,18 +102,31 @@ class Game extends React.Component {
         squares : buff
       }]),
       xIsNext : !this.state.xIsNext,
+      stepNumber : history.length,
     });
+  }
+
+  jumpTo(move) {
+    console.log('jumpTo : ' + move);
+    this.setState({
+      stepNumber : move,
+      xIsNext : (move % 2) === 0,      
+    })
   }
 
   render() {
 
     let history = this.state.history;
-    let history1 = this.state.history.slice();
+    // let history1 = this.state.history;
     console.log('Game Render');
+    console.log('history')
     console.log(history);
-    console.log(history1);
-    let current = history[history.length - 1];
+    console.log('stepNumber : ' + this.state.stepNumber);
+    // console.log(history1);
+    let current = history[this.state.stepNumber];
 
+    console.log('current')
+    console.log(current)
     let winner = judgeWinner(current.squares);
     let status;
     if(winner) {
@@ -121,7 +139,7 @@ class Game extends React.Component {
       const desc = move ? 'Go to move #' + move : 'Go to game first';
       return (
         <li key={move}>
-          <button>{desc}</button>
+          <button onClick={() => this.jumpTo(move)} >{desc}</button>
         </li>
       );
     });
