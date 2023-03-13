@@ -27,22 +27,19 @@ function App() {
   );
 }
 
-class Square extends React.Component {
-  
-  render() {
+function Square (props) {
     return (
       
       <button className="square" >
-        
+        {props.valProps1}
       </button>
     );
-  }
 }
 
 class Board extends React.Component {
 
   renderSquare(i) {
-    return <Square />;
+    return <Square valProps1={i}/>;
   }
 
   render() {
