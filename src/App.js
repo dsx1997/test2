@@ -30,7 +30,7 @@ function App() {
 function Square (props) {
     return (
       
-      <button className="square" >
+      <button className="square" onClick={props.funcProps1}>
         {props.valProps1}
       </button>
     );
@@ -38,8 +38,12 @@ function Square (props) {
 
 class Board extends React.Component {
 
+  handleClick(i) {
+    console.log('handleClick : ' + i);
+  }
+
   renderSquare(i) {
-    return <Square valProps1={i}/>;
+    return <Square valProps1={i} funcProps1={() => this.handleClick(i)}/>;
   }
 
   render() {
