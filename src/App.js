@@ -71,14 +71,19 @@ class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      squares : Array(9).fill(null),
+      history : [{
+        squares : Array(9).fill(null),
+      }],
       xIsNext : true,
     };
   }
   
   handleClick(i) {
     console.log('handleClick : ' + i);
-    const buff = this.state.squares.slice();
+
+    let history = this.state.history;
+    let current = history[history.length - 1];
+    let buff = current.squares;
     console.log('buff');
     console.log(buff);
     if(buff[i] || judgeWinner(buff)) {
@@ -88,14 +93,23 @@ class Game extends React.Component {
 
 
     this.setState({
-      squares : buff,
+      history : history.concat([{
+        squares : buff
+      }]),
       xIsNext : !this.state.xIsNext,
     });
   }
 
   render() {
 
-    let winner = judgeWinner(this.state.squares);
+    let history = this.state.history;
+    let history1 = this.state.history.slice();
+    console.log('Game Render');
+    console.log(history);
+    console.log(history1);
+    let current = history[history.length - 1];
+
+    let winner = judgeWinner(current.squares);
     let status;
     if(winner) {
       status = 'Winner is : ' + winner;
@@ -106,7 +120,7 @@ class Game extends React.Component {
     return (
       <div className="game">
         <div className="game-board">
-          <Board valProps2={this.state.squares} funcProps2={(i) => this.handleClick(i)}/>
+          <Board valProps2={current.squares} funcProps2={(i) => this.handleClick(i)}/>
         </div>
         <div className="game-info">
           <div>{status}</div>
