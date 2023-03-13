@@ -116,11 +116,13 @@ class Game extends React.Component {
 
   render() {
 
-    let history = this.state.history;
-    // let history1 = this.state.history;
+    let history1 = this.state.history;
+    let history = this.state.history.slice(0, this.state.stepNumber + 1);
     console.log('Game Render');
     console.log('history')
     console.log(history);
+    console.log('history 1 ');
+    console.log(history1);
     console.log('stepNumber : ' + this.state.stepNumber);
     // console.log(history1);
     let current = history[this.state.stepNumber];
@@ -132,7 +134,11 @@ class Game extends React.Component {
     if(winner) {
       status = 'Winner is : ' + winner;
     } else {
-      status = 'Next player: X';
+      if(judgeGameOver(current.squares)) {
+        status = 'Game Over';
+      } else {
+        status = 'Next player: X';
+      }      
     }
     
     const moves = history.map((step, move) => {
@@ -176,6 +182,15 @@ function judgeWinner(squares) {
     }
   }
   return null;
+}
+
+function judgeGameOver(square) {
+  console.log('in judgeGameOver function');
+  console.log(square);
+  for(let j = 0; j < square.length; j++) {
+    if(!square[j]) return;
+  }
+  return true;
 }
 // ========================================
 
